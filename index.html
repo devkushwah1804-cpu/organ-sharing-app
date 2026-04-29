@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Organ Sharing – Donor & Finder Application. Connecting organ donors with recipients to save lives. Project by Dev Kushwah." />
+  <title>LifeLink — Organ Sharing | Donor & Finder</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <style>
+    /* Inline critical overrides / additional page-specific styles */
+    .hidden { display: none !important; }
+    .hero-highlight-box {
+      background: linear-gradient(135deg, rgba(192,57,43,.06), rgba(30,132,73,.06));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: .88rem;
+      color: var(--slate);
+    }
+    .urgency-ticker {
+      background: var(--red);
+      color: #fff;
+      padding: 10px 5%;
+      font-size: .84rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      overflow: hidden;
+    }
+    .urgency-ticker .label {
+      background: rgba(255,255,255,.2);
+      padding: 2px 10px;
+      border-radius: 50px;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+    .ticker-text {
+      animation: marquee 28s linear infinite;
+      white-space: nowrap;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .blood-group-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .blood-chip {
+      padding: 6px 14px;
+      border-radius: 50px;
+      border: 1.5px solid var(--border);
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--slate);
+      background: var(--warm-white);
+    }
+    .blood-chip:hover,
+    .blood-chip.selected {
+      background: var(--red);
+      border-color: var(--red);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ====================================================
+     URGENCY TICKER
+     ==================================================== -->
+<div class="urgency-ticker">
+  <span class="label">LIVE</span>
+  <span class="ticker-text">
+    🚨 URGENT: O- kidney needed in Delhi &nbsp;|&nbsp; 🫀 Heart match found in Mumbai – coordinating &nbsp;|&nbsp; 🟢 New donor registered: Liver, Blood B+ – Pune &nbsp;|&nbsp; ⚠️ Critical: AB+ liver needed within 48 hours in Jaipur &nbsp;|&nbsp; 🙏 Thank you to 12 new donors who registered this week &nbsp;|&nbsp;
+    🚨 URGENT: O- kidney needed in Delhi &nbsp;|&nbsp; 🫀 Heart match found in Mumbai – coordinating &nbsp;|&nbsp; 🟢 New donor registered: Liver, Blood B+ – Pune &nbsp;|&nbsp; ⚠️ Critical: AB+ liver needed within 48 hours in Jaipur &nbsp;|&nbsp; 🙏 Thank you to 12 new donors who registered this week
+  </span>
+</div>
+
+<!-- ====================================================
+     NAVBAR
+     ==================================================== -->
+<nav class="navbar" id="navbar">
+  <div class="nav-brand">
+    <div class="heart-icon">❤</div>
+    <span>LifeLink</span>
+  </div>
+
+  <div class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#register">Register</a>
+    <a href="#search">Find Donor</a>
+    <a href="#admin">Admin</a>
+    <a href="#about">About</a>
+  </div>
+
+  <div class="nav-cta">
+    <button class="btn btn-outline btn-sm" onclick="document.getElementById('search').scrollIntoView({behavior:'smooth'})">Find Donor</button>
+    <button class="btn btn-primary btn-sm" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">Become a Donor</button>
+  </div>
+
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="nav-mobile" id="navMobile">
+  <a href="#home">🏠 Home</a>
+  <a href="#how-it-works">📋 How It Works</a>
+  <a href="#register">📝 Register</a>
+  <a href="#search">🔍 Find Donor</a>
+  <a href="#admin">🛡 Admin Panel</a>
+  <a href="#about">ℹ️ About</a>
+  <button class="btn btn-primary" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">Become a Donor</button>
+</div>
+
+<!-- ====================================================
+     HERO
+     ==================================================== -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-tag">
+      <span class="dot"></span>
+      Organ Sharing Platform
+    </div>
+
+    <h1 class="hero-title">
+      Give the Gift of<br/>
+      <span class="highlight">Life</span> — Connect<br/>
+      Donors &amp; Finders
+    </h1>
+
+    <p class="hero-desc">
+      LifeLink bridges the gap between organ donors and recipients across India.
+      Register as a donor, search for compatible organs, and save lives — all in one place.
+    </p>
+
+    <div class="hero-actions">
+      <button class="btn btn-primary btn-lg" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">
+        ❤ Become a Donor
+      </button>
+      <button class="btn btn-outline btn-lg" onclick="document.getElementById('search').scrollIntoView({behavior:'smooth'})">
+        🔍 Find an Organ
+      </button>
+    </div>
+
+    <div class="hero-highlight-box fade-up">
+      <span style="font-size:1.5rem">🇮🇳</span>
+      <span>India needs <strong>5 lakh+</strong> organ transplants annually. Only a fraction happen. <strong>Be the change.</strong></span>
+    </div>
+
+    <div class="hero-stats" style="margin-top:32px">
+      <div class="stat-item fade-up">
+        <div class="stat-number" data-count="500000" data-suffix="+">0</div>
+        <div class="stat-label">Annual Need</div>
+      </div>
+      <div class="stat-item fade-up">
+        <div class="stat-number" data-count="6000" data-suffix="+">0</div>
+        <div class="stat-label">Transplants/Year</div>
+      </div>
+      <div class="stat-item fade-up">
+        <div class="stat-number" data-count="12">0</div>
+        <div class="stat-label">Registered Donors</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="organ-card">
+      <div class="organ-icon red">🫀</div>
+      <div class="organ-info">
+        <h4>Heart • Mumbai</h4>
+        <p>Blood: AB+ | Age: 28 | Critical</p>
+      </div>
+      <span class="match-badge">Match Found</span>
+    </div>
+
+    <div class="organ-card">
+      <div class="organ-icon green">🫁</div>
+      <div class="organ-info">
+        <h4>Kidney • Delhi</h4>
+        <p>Blood: O+ | Age: 34 | Normal</p>
+      </div>
+      <span class="match-badge pending">Pending</span>
+    </div>
+
+    <div class="organ-card">
+      <div class="organ-icon blue">👁</div>
+      <div class="organ-info">
+        <h4>Cornea • Pune</h4>
+        <p>Blood: A- | Age: 26 | Normal</p>
+      </div>
+      <span class="match-badge">Available</span>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     HOW IT WORKS
+     ==================================================== -->
+<section class="how-it-works" id="how-it-works">
+  <div style="text-align:center;margin-bottom:8px">
+    <span class="section-tag">Process</span>
+  </div>
+  <h2 class="section-title text-center">How LifeLink Works</h2>
+  <p class="section-sub text-center">A simple 6-step process connects organ donors with recipients through our verified, secure platform.</p>
+  <div class="divider center"></div>
+
+  <div class="steps-grid">
+    <div class="step-card fade-up">
+      <div class="step-number">1</div>
+      <h3>Register</h3>
+      <p>Sign up as a Donor or Finder with your personal and medical details.</p>
+    </div>
+    <div class="step-card fade-up">
+      <div class="step-number">2</div>
+      <h3>Admin Verification</h3>
+      <p>Our admin team reviews and verifies all profiles for authenticity.</p>
+    </div>
+    <div class="step-card fade-up">
+      <div class="step-number">3</div>
+      <h3>Search &amp; Match</h3>
+      <p>Recipients search using organ type, blood group, and city filters.</p>
+    </div>
+    <div class="step-card fade-up">
+      <div class="step-number">4</div>
+      <h3>Send Request</h3>
+      <p>Finder sends a donation request; both parties get instant alerts.</p>
+    </div>
+    <div class="step-card fade-up">
+      <div class="step-number">5</div>
+      <h3>Coordination</h3>
+      <p>Admin facilitates hospital coordination and communication.</p>
+    </div>
+    <div class="step-card fade-up">
+      <div class="step-number">6</div>
+      <h3>Completion</h3>
+      <p>Transplant completed; record updated. A life saved. 🙏</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     MODULES
+     ==================================================== -->
+<section id="modules" style="background:#fff;padding:80px 5%">
+  <span class="section-tag">Modules</span>
+  <h2 class="section-title">Application Modules</h2>
+  <p class="section-sub">Four specialized modules work together to create a seamless organ-sharing ecosystem.</p>
+  <div class="divider"></div>
+
+  <div class="modules-grid">
+    <div class="module-card fade-up" style="--card-accent:var(--red)">
+      <div class="module-icon">🛡</div>
+      <h3>Admin Module</h3>
+      <p>Central control panel for hospital administrators and NGO coordinators to manage the platform.</p>
+      <ul class="feature-list">
+        <li>Verify donor &amp; recipient profiles</li>
+        <li>Approve or reject requests</li>
+        <li>Send notifications &amp; alerts</li>
+        <li>View analytics dashboard</li>
+        <li>Manage all user data</li>
+      </ul>
+    </div>
+
+    <div class="module-card fade-up" style="--card-accent:var(--green)">
+      <div class="module-icon">❤</div>
+      <h3>Donor Module</h3>
+      <p>For individuals willing to donate organs — either after death (cadaveric) or living donation.</p>
+      <ul class="feature-list">
+        <li>Easy donor registration</li>
+        <li>Specify organ &amp; blood type</li>
+        <li>Update availability status</li>
+        <li>Receive match notifications</li>
+        <li>Profile management</li>
+      </ul>
+    </div>
+
+    <div class="module-card fade-up" style="--card-accent:var(--blue)">
+      <div class="module-icon">🔍</div>
+      <h3>Finder / Recipient Module</h3>
+      <p>For patients or families actively searching for a compatible organ donor.</p>
+      <ul class="feature-list">
+        <li>Advanced search filters</li>
+        <li>Filter by organ, blood, city</li>
+        <li>Send donation requests</li>
+        <li>Track request status</li>
+        <li>Emergency urgency flag</li>
+      </ul>
+    </div>
+
+    <div class="module-card fade-up" style="--card-accent:var(--gold)">
+      <div class="module-icon">🏥</div>
+      <h3>Doctor / Hospital Module</h3>
+      <p>For medical professionals to coordinate transplants and update medical compatibility.</p>
+      <ul class="feature-list">
+        <li>Medical profile validation</li>
+        <li>Transplant coordination</li>
+        <li>Hospital registration</li>
+        <li>Outcome reporting</li>
+        <li>Compliance documentation</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     STATS BAND
+     ==================================================== -->
+<div class="stats-band">
+  <div class="stats-inner">
+    <div class="stat-block fade-up">
+      <div class="num" data-count="500000" data-suffix="+">0</div>
+      <div class="lbl">People Need Organs Annually in India</div>
+    </div>
+    <div class="stat-block fade-up">
+      <div class="num" data-count="6000" data-suffix="+">0</div>
+      <div class="lbl">Transplants Happen Each Year</div>
+    </div>
+    <div class="stat-block fade-up">
+      <div class="num" data-count="8" data-suffix="hr">0</div>
+      <div class="lbl">Max Liver Viability After Harvest</div>
+    </div>
+    <div class="stat-block fade-up">
+      <div class="num" data-count="1" data-suffix="%">0</div>
+      <div class="lbl">Organ Donation Rate (India)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================================
+     REGISTRATION
+     ==================================================== -->
+<section class="form-section" id="register">
+  <div style="text-align:center;margin-bottom:8px">
+    <span class="section-tag">Register</span>
+  </div>
+  <h2 class="section-title text-center">Join LifeLink Today</h2>
+  <p class="section-sub text-center">Register as a Donor or as a Finder seeking an organ. All data is securely stored.</p>
+  <div class="divider center"></div>
+
+  <div class="form-card" style="margin-top:40px">
+    <!-- Tabs -->
+    <div class="form-tabs">
+      <div class="tab-btn active" data-tab="donor">❤ Register as Donor</div>
+      <div class="tab-btn" data-tab="finder">🔍 Register as Finder</div>
+    </div>
+
+    <h3 id="formTitle" style="font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:24px;color:var(--charcoal)">Donor Registration</h3>
+
+    <form id="registerForm">
+      <!-- Common Fields -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" name="name" placeholder="e.g. Ramesh Sharma" required />
+        </div>
+        <div class="form-group">
+          <label for="age">Age *</label>
+          <input type="number" id="age" name="age" placeholder="e.g. 32" min="18" max="70" required />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number *</label>
+          <input type="tel" id="phone" name="phone" placeholder="9XXXXXXXXX" required />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="blood">Blood Group *</label>
+          <select id="blood" name="blood" required>
+            <option value="">Select Blood Group</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="city">City *</label>
+          <input type="text" id="city" name="city" placeholder="e.g. Delhi" required />
+        </div>
+      </div>
+
+      <!-- Donor Specific Fields -->
+      <div id="donorFields">
+        <div class="form-group" style="margin-bottom:20px">
+          <label>Organs Willing to Donate *</label>
+          <div class="checkbox-group" style="margin-top:10px">
+            <label class="checkbox-item"><input type="checkbox" name="organ" value="Kidney" /> 🫘 Kidney</label>
+            <label class="checkbox-item"><input type="checkbox" name="organ" value="Liver" />  🫀 Liver</label>
+            <label class="checkbox-item"><input type="checkbox" name="organ" value="Heart" />  ❤ Heart</label>
+            <label class="checkbox-item"><input type="checkbox" name="organ" value="Lungs" />  🫁 Lungs</label>
+            <label class="checkbox-item"><input type="checkbox" name="organ" value="Cornea" /> 👁 Cornea</label>
+            <label class="checkbox-item"><input type="checkbox" name="organ" value="Pancreas" /> 🩺 Pancreas</label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="donorType">Donation Type</label>
+            <select id="donorType" name="donorType">
+              <option value="cadaveric">Cadaveric (Post-death)</option>
+              <option value="living">Living Donor</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="urgency">Urgency Level</label>
+            <select id="urgency" name="urgency">
+              <option value="Normal">Normal</option>
+              <option value="Urgent">Urgent</option>
+              <option value="Critical">Critical</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:20px">
+          <label for="medHistory">Medical History (Optional)</label>
+          <textarea id="medHistory" name="medHistory" placeholder="Briefly describe any relevant medical history or conditions…"></textarea>
+        </div>
+      </div>
+
+      <!-- Finder Specific Fields -->
+      <div id="finderFields" class="hidden">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="organNeeded">Organ Needed *</label>
+            <select id="organNeeded" name="organNeeded">
+              <option value="">Select Organ</option>
+              <option>Kidney</option>
+              <option>Liver</option>
+              <option>Heart</option>
+              <option>Lungs</option>
+              <option>Cornea</option>
+              <option>Pancreas</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="finderUrgency">Urgency</label>
+            <select id="finderUrgency" name="finderUrgency">
+              <option value="Normal">Normal</option>
+              <option value="Urgent">Urgent</option>
+              <option value="Critical">Critical – Need Within 48hrs</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:20px">
+          <label for="doctorNote">Doctor's Note / Medical Condition (Optional)</label>
+          <textarea id="doctorNote" name="doctorNote" placeholder="Describe the patient's condition and why the organ transplant is needed…"></textarea>
+        </div>
+
+        <div class="form-group" style="margin-bottom:20px">
+          <label for="hospital">Hospital Name</label>
+          <input type="text" id="hospital" name="hospital" placeholder="e.g. AIIMS, New Delhi" />
+        </div>
+      </div>
+
+      <!-- Consent -->
+      <div class="form-group" style="flex-direction:row;align-items:flex-start;gap:10px;margin-bottom:24px">
+        <input type="checkbox" id="consent" name="consent" required style="width:16px;height:16px;accent-color:var(--red);margin-top:3px;flex-shrink:0" />
+        <label for="consent" style="font-size:.84rem;color:var(--mid);cursor:pointer">
+          I confirm that all the information provided is accurate and I consent to share it with the LifeLink admin team and relevant medical personnel for the purpose of organ donation and transplantation coordination.
+        </label>
+      </div>
+
+      <div class="form-submit">
+        <button type="submit" class="btn btn-primary btn-lg">
+          ❤ Submit Registration
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ====================================================
+     SEARCH / FIND DONOR
+     ==================================================== -->
+<section class="search-section" id="search">
+  <span class="section-tag">Search</span>
+  <h2 class="section-title">Find a Compatible Donor</h2>
+  <p class="section-sub">Use filters to narrow down compatible donors by organ type, blood group, and location.</p>
+  <div class="divider"></div>
+
+  <div class="search-bar" style="margin-top:32px">
+    <input type="text" id="searchInput" placeholder="🔍  Search by name or city…" />
+    <select id="bloodFilter">
+      <option value="">All Blood Groups</option>
+      <option value="A+">A+</option>
+      <option value="A-">A-</option>
+      <option value="B+">B+</option>
+      <option value="B-">B-</option>
+      <option value="O+">O+</option>
+      <option value="O-">O-</option>
+      <option value="AB+">AB+</option>
+      <option value="AB-">AB-</option>
+    </select>
+    <select id="organFilter">
+      <option value="">All Organs</option>
+      <option value="Kidney">Kidney</option>
+      <option value="Liver">Liver</option>
+      <option value="Heart">Heart</option>
+      <option value="Lungs">Lungs</option>
+      <option value="Cornea">Cornea</option>
+      <option value="Pancreas">Pancreas</option>
+    </select>
+    <input type="text" id="cityFilter" placeholder="📍 City…" style="max-width:160px" />
+    <select id="availFilter">
+      <option value="">Any Availability</option>
+      <option value="yes">Available Only</option>
+      <option value="no">Unavailable</option>
+    </select>
+    <button class="btn btn-primary" id="searchBtn">Search</button>
+    <button class="btn btn-ghost" id="clearSearch">Clear</button>
+  </div>
+
+  <div class="results-header">
+    <p class="results-count" id="resultsCount">Loading donors…</p>
+    <div style="display:flex;gap:8px">
+      <span style="font-size:.8rem;color:var(--mid)">Sort by:</span>
+      <select style="font-size:.8rem;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--warm-white)" onchange="sortDonors(this.value)">
+        <option value="name">Name</option>
+        <option value="city">City</option>
+        <option value="available">Availability</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="donors-grid" id="donorsGrid">
+    <!-- Rendered by JS -->
+  </div>
+</section>
+
+<!-- ====================================================
+     AWARENESS
+     ==================================================== -->
+<div class="awareness-band">
+  <h2>One Donor Can Save<br/>Up to 8 Lives</h2>
+  <p>
+    Every 10 minutes, someone is added to the organ transplant waiting list. Your decision to become a donor could be the reason someone's family stays together.
+  </p>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+    <button class="btn btn-lg" style="background:#fff;color:var(--red);font-weight:700" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">
+      ❤ Register as Donor Now
+    </button>
+    <button class="btn btn-outline btn-lg" onclick="document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})">
+      Learn How It Works
+    </button>
+  </div>
+</div>
+
+<!-- ====================================================
+     ADMIN DASHBOARD
+     ==================================================== -->
+<section class="admin-section" id="admin">
+  <span class="section-tag" style="background:rgba(232,180,184,.1);color:var(--red-soft)">Admin Panel</span>
+  <h2 class="section-title">Admin Dashboard</h2>
+  <p class="section-sub">Centralized control for administrators to verify, approve, and coordinate organ donation requests.</p>
+  <div class="divider"></div>
+
+  <div class="dashboard-preview">
+    <div class="dash-header">
+      <div class="dash-title">📊 Live Overview</div>
+      <span style="font-size:.78rem;opacity:.5">LifeLink Admin v1.0 | Demo Mode</span>
+    </div>
+
+    <div class="dash-metrics">
+      <div class="metric accent">
+        <div class="m-val" id="metricTotal">12</div>
+        <div class="m-lbl">Total Donors</div>
+      </div>
+      <div class="metric green">
+        <div class="m-val" id="metricAvail">8</div>
+        <div class="m-lbl">Available Donors</div>
+      </div>
+      <div class="metric">
+        <div class="m-val" id="metricReq">5</div>
+        <div class="m-lbl">Total Requests</div>
+      </div>
+      <div class="metric blue">
+        <div class="m-val" id="metricMatched">1</div>
+        <div class="m-lbl">Matches Completed</div>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Request ID</th>
+            <th>Donor</th>
+            <th>Recipient</th>
+            <th>Organ</th>
+            <th>Blood</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="adminTbody">
+          <!-- Rendered by JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:16px;text-align:center">
+      <p style="font-size:.78rem;opacity:.4">Demo admin panel — click ✓/✗ to approve or reject pending requests</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     ABOUT / PROJECT INFO
+     ==================================================== -->
+<section id="about" style="background:var(--cream);padding:80px 5%">
+  <span class="section-tag">About</span>
+  <h2 class="section-title">About This Project</h2>
+  <p class="section-sub">Submitted as part of the Computer Application academic curriculum. Built to solve a real, life-critical problem using technology.</p>
+  <div class="divider"></div>
+
+  <div class="team-grid" style="margin-top:48px">
+    <div class="info-card fade-up">
+      <div class="icon">👨‍💻</div>
+      <h4>Developer</h4>
+      <p><strong>Dev Kushwah</strong><br/>Computer Application Student. Passionate about leveraging technology to solve humanitarian problems.</p>
+    </div>
+
+    <div class="info-card fade-up">
+      <div class="icon">🎓</div>
+      <h4>Academic Context</h4>
+      <p>This project is submitted as a Computer Application final project, integrating skills from DBMS, Web Technologies, Software Engineering, and System Security.</p>
+    </div>
+
+    <div class="info-card fade-up">
+      <div class="icon">⚙️</div>
+      <h4>Technologies Used</h4>
+      <p>HTML5, CSS3, Vanilla JavaScript, MySQL (backend), PHP (backend), Bootstrap concepts, Responsive Design, Role-Based Access Control.</p>
+    </div>
+
+    <div class="info-card fade-up">
+      <div class="icon">🌐</div>
+      <h4>Reference Organizations</h4>
+      <p>National Organ and Tissue Transplant Organisation (NOTTO), Government of India, and MOHAN Foundation — for data and inspiration.</p>
+    </div>
+
+    <div class="info-card fade-up">
+      <div class="icon">🔒</div>
+      <h4>Security Features</h4>
+      <p>Encrypted data storage, role-based access control (Admin / Donor / Finder / Doctor), verified profile system, and privacy-first design.</p>
+    </div>
+
+    <div class="info-card fade-up">
+      <div class="icon">🚀</div>
+      <h4>Future Scope</h4>
+      <p>AI-based organ matching, GPS real-time donor location, government health database integration, multi-language support, and mobile app.</p>
+    </div>
+  </div>
+
+  <!-- Project Index -->
+  <div style="margin-top:60px;background:#fff;border-radius:var(--radius-lg);padding:36px;border:1px solid var(--border)">
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:24px;color:var(--charcoal)">📚 Project Index</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:var(--radius);background:var(--cream)">
+        <span style="font-size:.72rem;font-weight:700;background:var(--red);color:#fff;padding:3px 8px;border-radius:50px;white-space:nowrap">Chapter 1</span>
+        <span style="font-size:.85rem;color:var(--slate)">Introduction &amp; Problem Statement</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:var(--radius);background:var(--cream)">
+        <span style="font-size:.72rem;font-weight:700;background:var(--red);color:#fff;padding:3px 8px;border-radius:50px;white-space:nowrap">Chapter 2</span>
+        <span style="font-size:.85rem;color:var(--slate)">Literature Review &amp; Gap Analysis</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:var(--radius);background:var(--cream)">
+        <span style="font-size:.72rem;font-weight:700;background:var(--red);color:#fff;padding:3px 8px;border-radius:50px;white-space:nowrap">Chapter 3</span>
+        <span style="font-size:.85rem;color:var(--slate)">System Analysis &amp; SRS</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:var(--radius);background:var(--cream)">
+        <span style="font-size:.72rem;font-weight:700;background:var(--red);color:#fff;padding:3px 8px;border-radius:50px;white-space:nowrap">Chapter 4</span>
+        <span style="font-size:.85rem;color:var(--slate)">System Design &amp; Architecture</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:var(--radius);background:var(--cream)">
+        <span style="font-size:.72rem;font-weight:700;background:var(--red);color:#fff;padding:3px 8px;border-radius:50px;white-space:nowrap">Chapter 5</span>
+        <span style="font-size:.85rem;color:var(--slate)">Implementation</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:var(--radius);background:var(--cream)">
+        <span style="font-size:.72rem;font-weight:700;background:var(--red);color:#fff;padding:3px 8px;border-radius:50px;white-space:nowrap">Chapter 6</span>
+        <span style="font-size:.85rem;color:var(--slate)">System Testing</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:var(--radius);background:var(--cream)">
+        <span style="font-size:.72rem;font-weight:700;background:var(--red);color:#fff;padding:3px 8px;border-radius:50px;white-space:nowrap">Chapter 7</span>
+        <span style="font-size:.85rem;color:var(--slate)">Security &amp; Privacy</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:var(--radius);background:var(--cream)">
+        <span style="font-size:.72rem;font-weight:700;background:var(--red);color:#fff;padding:3px 8px;border-radius:50px;white-space:nowrap">Chapter 8</span>
+        <span style="font-size:.85rem;color:var(--slate)">Screenshots &amp; Output</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:var(--radius);background:var(--cream)">
+        <span style="font-size:.72rem;font-weight:700;background:var(--red);color:#fff;padding:3px 8px;border-radius:50px;white-space:nowrap">Chapter 9</span>
+        <span style="font-size:.85rem;color:var(--slate)">Future Scope &amp; Enhancements</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:var(--radius);background:var(--cream)">
+        <span style="font-size:.72rem;font-weight:700;background:var(--red);color:#fff;padding:3px 8px;border-radius:50px;white-space:nowrap">Chapter 10</span>
+        <span style="font-size:.85rem;color:var(--slate)">Conclusion</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     FOOTER
+     ==================================================== -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-brand" style="filter:brightness(1.5)">
+        <div class="heart-icon" style="background:var(--red)">❤</div>
+        <span style="color:#fff;font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700">LifeLink</span>
+      </div>
+      <p>A digital platform connecting organ donors with recipients across India. Built with purpose, for humanity.</p>
+      <p style="margin-top:12px;font-size:.78rem">Project by Dev Kushwah · Computer Application</p>
+    </div>
+
+    <div class="footer-col">
+      <h5>Quick Links</h5>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#register">Register</a></li>
+        <li><a href="#search">Find Donor</a></li>
+        <li><a href="#admin">Admin Panel</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Organs Covered</h5>
+      <ul>
+        <li><a href="#search">🫘 Kidney</a></li>
+        <li><a href="#search">🫀 Liver</a></li>
+        <li><a href="#search">❤ Heart</a></li>
+        <li><a href="#search">🫁 Lungs</a></li>
+        <li><a href="#search">👁 Cornea</a></li>
+        <li><a href="#search">🩺 Pancreas</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Resources</h5>
+      <ul>
+        <li><a href="https://notto.abdm.gov.in/" target="_blank">NOTTO India</a></li>
+        <li><a href="https://www.mohanfoundation.org/" target="_blank">MOHAN Foundation</a></li>
+        <li><a href="#about">About Project</a></li>
+        <li><a href="#admin">Admin Login</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 LifeLink · Organ Sharing Platform · Dev Kushwah</span>
+    <span>Made with ❤ to save lives</span>
+  </div>
+</footer>
+
+<!-- ====================================================
+     MODALS
+     ==================================================== -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal">
+    <div class="modal-close" onclick="closeModal('profileModal')">✕</div>
+    <div id="profileModalBody"><!-- JS rendered --></div>
+  </div>
+</div>
+
+<!-- ====================================================
+     TOAST CONTAINER
+     ==================================================== -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Scroll to top -->
+<div class="scroll-top" title="Back to top">↑</div>
+
+<!-- ====================================================
+     SCRIPT
+     ==================================================== -->
+<script src="js/app.js"></script>
+<script>
+  // Inline helpers referenced in HTML
+  function sortDonors(by) {
+    if (by === 'name')      filteredDonors.sort((a,b) => a.name.localeCompare(b.name));
+    else if (by === 'city') filteredDonors.sort((a,b) => a.city.localeCompare(b.city));
+    else if (by === 'available') filteredDonors.sort((a,b) => b.available - a.available);
+    renderDonors();
+  }
+</script>
+
+</body>
+</html>
